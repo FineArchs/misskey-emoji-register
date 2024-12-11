@@ -8,6 +8,7 @@
     defaultFFMpegArgs,
   } from "../lib/store";
   import { getNote, splitEmojis } from "../lib/misskey";
+  import { parseEmojiRequest } from "../lib/emoji-request";
 
   let noteId = "";
 
@@ -38,7 +39,7 @@
     const noteData = await getNote(noteId);
     note.set(noteData);
     noteResponse = JSON.stringify(noteData);
-    const emojisData = splitEmojis(noteData);
+    const emojisData = parseEmojiRequest(noteData);
     emojis.set(emojisData);
   };
 </script>
