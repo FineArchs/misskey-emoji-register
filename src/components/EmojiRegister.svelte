@@ -52,13 +52,14 @@
   };
 
   $: {
-    console.log(beforeConvertFile);
-    beforeConvertImg.src = URL.createObjectURL(beforeConvertFile);
-    convert(beforeConvertFile, ffmpegArgs)
-      .then(v => {
-        afterConvertFile = v;
-        if (v) afterConvertImg.src = URL.createObjectURL(afterConvertFile);
-      });
+    if (beforeConvertFile) {
+      beforeConvertImg.src = URL.createObjectURL(beforeConvertFile);
+      convert(beforeConvertFile, ffmpegArgs)
+        .then(v => {
+          afterConvertFile = v;
+          if (v) afterConvertImg.src = URL.createObjectURL(afterConvertFile);
+        });
+    }
   }
     
   $: {
