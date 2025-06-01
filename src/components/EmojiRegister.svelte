@@ -52,6 +52,7 @@
   };
 
   const imageConvertwithUpload = async () => {
+    if (!inputFile || !inputFile[0]) return;
     beforeConvertFile = inputFile[0];
     beforeConvertImg.src = URL.createObjectURL(beforeConvertFile);
     afterConvertFile = await convert(beforeConvertFile, ffmpegArgs);
@@ -201,11 +202,16 @@
           変換
         </button>
         <div>
-          <label class="btn btn-warning btn-block h-full shadow">
+          <label
+            class="btn btn-warning btn-block h-full shadow"
+            for="input-upload-file"
+          >
             アップロード変換
           </label>
           <input
             type="file"
+            name="input-upload-file"
+            id="input-upload-file"
             bind:files={inputFile}
             hidden
           />
