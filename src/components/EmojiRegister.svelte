@@ -52,6 +52,7 @@
   };
 
   $: {
+    console.log(beforeConvertFile);
     beforeConvertImg.src = URL.createObjectURL(beforeConvertFile);
     convert(beforeConvertFile, ffmpegArgs)
       .then(v => {
