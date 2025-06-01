@@ -196,7 +196,7 @@
       </div>
       <div class="grid grid-cols-2">
         <button
-          class="btn btn-info btn-block h-full shadow">
+          class="btn btn-info btn-block h-full shadow"
           onclick={imageConvert}
         >
           変換
