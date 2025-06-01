@@ -117,3 +117,25 @@ export const addEmoji = async (request: AdminEmojiAddRequest, file: File) => {
   request.fileId = createFile.id;
   await miApi.request("admin/emoji/add", request);
 }
+
+export async function fetchImage(url: string): Promise<File> {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`画像の取得に失敗しました: ${response.status}`);
+  }
+
+  const blob = await response.blob();
+
+  // URLからファイル名を抽出
+  const urlObj = new URL(url);
+  let fileName = urlObj.pathname.split('/').pop() || 'downloaded_image';
+
+  // ファイル名に拡張子が含まれていない場合、MIMEタイプから拡張子を推測
+  if (!fileName.includes('.')) {
+    const mimeType = blob.type;
+    const extension = mimeType.split('/').pop();
+    fileName += `.${extension}`;
+  }
+
+  return new File([blob], fileName, { type: blob.type });
+}

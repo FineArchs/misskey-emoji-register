@@ -3,7 +3,7 @@
   import { get } from "svelte/store";
   import { convert } from "../lib/ffmpeg";
   import type { AdminEmojiAddRequest } from "misskey-js/entities.js";
-  import { addEmoji } from "../lib/misskey";
+  import { fetchImage, addEmoji } from "../lib/misskey";
 
   export let emoji: Emoji;
 
@@ -27,6 +27,10 @@
   };
 
   const imageConvert = async () => {
+    beforeConvertFile = await fetchImage(emoji.file.url);
+  };
+
+  const imageConvertFromClipboard = async () => {
     const clipboardData = await navigator.clipboard.read();
     let imageFile: File;
 
@@ -35,34 +39,29 @@
       if (item.types.includes(emoji.file.type)) {
         const blob = await item.getType(emoji.file.type);
 
-        const reader = new FileReader();
-        reader.addEventListener("load", () => {
-          beforeConvertImg.src = reader.result as string;
-        });
         beforeConvertFile = new File([blob], emoji.file.name, {
           type: emoji.file.type,
         });
-        reader.readAsDataURL(blob);
-        afterConvertFile = await convert(beforeConvertFile, ffmpegArgs);
-        if (afterConvertFile != null) {
-          afterConvertImg.src = URL.createObjectURL(afterConvertFile);
-        }
+        return;
       }
     }
   };
 
   const imageConvertwithUpload = async () => {
-    if (!inputFile || !inputFile[0]) return;
     beforeConvertFile = inputFile[0];
-    beforeConvertImg.src = URL.createObjectURL(beforeConvertFile);
-    afterConvertFile = await convert(beforeConvertFile, ffmpegArgs);
-    if (afterConvertFile != null) {
-      afterConvertImg.src = URL.createObjectURL(afterConvertFile);
-    }
   };
 
   $: {
-    inputFile, imageConvertwithUpload();
+    beforeConvertImg.src = URL.createObjectURL(beforeConvertFile);
+    convert(beforeConvertFile, ffmpegArgs)
+      .then(v => {
+        afterConvertFile = v;
+        if (v) afterConvertImg.src = URL.createObjectURL(afterConvertFile);
+      });
+  }
+    
+  $: {
+    if (inputFile?.[0]) imageConvertwithUpload();
   }
 
   let beforewidth = 0;
@@ -194,12 +193,18 @@
           {/each}
         </div>
       </div>
+      <button
+        class="btn btn-info btn-lg btn-block shadow"
+        onclick={imageConvert}
+      >
+        変換
+      </button>
       <div class="grid grid-cols-2">
         <button
-          class="btn btn-info btn-block h-full shadow"
-          onclick={imageConvert}
+          class="btn btn-warning btn-block h-full shadow"
+          onclick={imageConvertFromClipboard}
         >
-          変換
+          クリップボードから変換
         </button>
         <div>
           <label
