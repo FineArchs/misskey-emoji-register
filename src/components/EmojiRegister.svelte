@@ -60,6 +60,10 @@
     }
   };
 
+  $: {
+    inputFile, imageConvertwithUpload();
+  }
+
   let beforewidth = 0;
   let beforeheight = 0;
   let afterwidth = 0;
@@ -189,26 +193,23 @@
           {/each}
         </div>
       </div>
-      <button
-        class="btn btn-info btn-lg btn-block shadow"
-        onclick={imageConvert}
-      >
-        変換
-      </button>
       <div class="grid grid-cols-2">
-        <label class="form-control w-full">
+        <button
+          class="btn btn-info btn-block h-full shadow">
+          onclick={imageConvert}
+        >
+          変換
+        </button>
+        <div>
+          <label class="btn btn-warning btn-block h-full shadow">
+            アップロード変換
+          </label>
           <input
             type="file"
             bind:files={inputFile}
-            class="file-input file-input-bordered"
+            hidden
           />
-        </label>
-        <button
-          class="btn btn-warning btn-block h-full shadow"
-          onclick={imageConvertwithUpload}
-        >
-          アップロード変換
-        </button>
+        </div>
       </div>
       <div class="grid grid-cols-2 gap-4 rounded-md bg-base-200 shadow">
         <div class="m-4">
