@@ -52,6 +52,7 @@
   };
 
   const imageConvertwithUpload = async () => {
+    if (!inputFile || !inputFile[0]) return;
     beforeConvertFile = inputFile[0];
     beforeConvertImg.src = URL.createObjectURL(beforeConvertFile);
     afterConvertFile = await convert(beforeConvertFile, ffmpegArgs);
@@ -59,6 +60,10 @@
       afterConvertImg.src = URL.createObjectURL(afterConvertFile);
     }
   };
+
+  $: {
+    inputFile, imageConvertwithUpload();
+  }
 
   let beforewidth = 0;
   let beforeheight = 0;
@@ -189,26 +194,28 @@
           {/each}
         </div>
       </div>
-      <button
-        class="btn btn-info btn-lg btn-block shadow"
-        onclick={imageConvert}
-      >
-        変換
-      </button>
       <div class="grid grid-cols-2">
-        <label class="form-control w-full">
+        <button
+          class="btn btn-info btn-block h-full shadow"
+          onclick={imageConvert}
+        >
+          変換
+        </button>
+        <div>
+          <label
+            class="btn btn-warning btn-block h-full shadow"
+            for="input-upload-file"
+          >
+            アップロード変換
+          </label>
           <input
             type="file"
+            name="input-upload-file"
+            id="input-upload-file"
             bind:files={inputFile}
-            class="file-input file-input-bordered"
+            hidden
           />
-        </label>
-        <button
-          class="btn btn-warning btn-block h-full shadow"
-          onclick={imageConvertwithUpload}
-        >
-          アップロード変換
-        </button>
+        </div>
       </div>
       <div class="grid grid-cols-2 gap-4 rounded-md bg-base-200 shadow">
         <div class="m-4">
