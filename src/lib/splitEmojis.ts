@@ -3,7 +3,7 @@ import type { Note } from "misskey-js/entities.js";
 
 const NAMECHAR = "①"
 const SPLITCHAR = "▼"
-const TAGSPLITCHAR = / |　/
+const TAGSPLITCHAR = /(?: |　|\n)+/
 const REPEATCHAR_REGEXP = /^(★|☆)$/
 const EMOJINAME_REGEXP = /:([a-z0-9_+-]+):/i
 
@@ -13,7 +13,7 @@ const requestFields: [string, (text: string, emoji: Emoji) => void][] = [
   ["②", (text, emoji) => emoji.license = text],
   ["③", (text, emoji) => emoji.from = text],
   ["④", (text, emoji) => emoji.description = text],
-  ["⑤", (text, emoji) => emoji.tag = text.split(TAGSPLITCHAR)],
+  ["⑤", (text, emoji) => emoji.tag = text.split(TAGSPLITCHAR).filter(s => s !== '')],
   // 以下docに定義なし フォーマットの定義が必要
   ["⑥", (text, emoji) => emoji.category = text],
   ["⑦", (text, emoji) => emoji.isSensitive = text],
