@@ -359,7 +359,7 @@
               <span class="label-text m-4">センシティブ</span>
               <input
                 type="checkbox"
-                class="toggle"
+                class="toggle checked:toggle-error"
                 bind:checked={sendEmojiData.isSensitive}
               />
             </label>
