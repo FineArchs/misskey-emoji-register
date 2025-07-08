@@ -359,7 +359,7 @@
               <span class="label-text m-4">センシティブ</span>
               <input
                 type="checkbox"
-                class="toggle"
+                class="toggle checked:text-pink-400"
                 bind:checked={sendEmojiData.isSensitive}
               />
             </label>
@@ -369,7 +369,7 @@
               <span class="label-text m-4">ローカルのみ</span>
               <input
                 type="checkbox"
-                class="toggle"
+                class="toggle checked:text-green-400"
                 bind:checked={sendEmojiData.localOnly}
               />
             </label>
