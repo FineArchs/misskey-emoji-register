@@ -5,11 +5,12 @@ const NAMECHAR = "①"
 const SPLITCHAR = "▼"
 const TAGSPLITCHAR = /(?: |　|\n)+/
 const REPEATCHAR_REGEXP = /^(★|☆)$/
-const EMOJINAME_REGEXP = /:([a-z0-9_+-]+):/i
+const EMOJINAME_REGEXP1 = /:([a-z0-9_+-]+):/i
+const EMOJINAME_REGEXP2 = /[a-z0-9_+-]+/i
 
 // 読み取りはこの順番に行われる。入れ替わりがあると正しく読み取られない
 const requestFields: [string, (text: string, emoji: Emoji) => void][] = [
-  ["①", (text, emoji) => emoji.name = text.match(EMOJINAME_REGEXP)![1]],
+  ["①", (text, emoji) => emoji.name = extractEmojiName(text)],
   ["②", (text, emoji) => emoji.license = text],
   ["③", (text, emoji) => emoji.from = text],
   ["④", (text, emoji) => emoji.description = text],
@@ -19,6 +20,14 @@ const requestFields: [string, (text: string, emoji: Emoji) => void][] = [
   ["⑦", (text, emoji) => emoji.isSensitive = text],
   ["⑧", (text, emoji) => emoji.localOnly = text],
 ];
+
+function extractEmojiName(text: string): string {
+  let match = text.match(EMOJINAME_REGEXP1);
+  if (match != null) return match[1]!;
+  match = text.match(EMOJINAME_REGEXP2);
+  if (match != null) return match[0]!;
+  throw new Error('no emoji name detected');
+}
 
 export const splitEmojis = (note: Note): Emoji[] => {
 
