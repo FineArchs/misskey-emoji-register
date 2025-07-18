@@ -3,7 +3,6 @@
     accessToken,
     serverUrl,
     note,
-    updateCookie,
     emojis,
     defaultFFMpegArgs,
   } from "../lib/store";
@@ -38,8 +37,6 @@
   const getNoteData = async () => {
     noteId = sanitizedNoteId;
     serverUrl.set(sanitizedServerUrl);
-    updateCookie();
-    init();
 
     const noteData = await getNote(noteId);
     note.set(noteData);
@@ -58,7 +55,6 @@
       type="text"
       class="input input-xs input-bordered md:input-md md:w-64"
       placeholder="EX: https://voskey.icalo.net"
-      oninput={updateCookie}
     />
     {#if $serverUrl !== sanitizedServerUrl}
       <div class="mt-1 text-sm">
@@ -79,7 +75,6 @@
       bind:value={$accessToken}
       type="password"
       class="input input-xs input-bordered md:input-md md:w-64"
-      oninput={updateCookie}
     />
     {#if $serverUrl}
       <button
@@ -108,7 +103,6 @@
       bind:value={noteId}
       type="text"
       class="input input-xs input-bordered md:input-md md:w-64"
-      oninput={updateCookie}
     />
     {#if noteId !== sanitizedNoteId}
       <div class="mt-1 text-sm">
@@ -130,7 +124,6 @@
       type="text"
       class="input input-xs input-bordered md:input-md md:w-64"
       placeholder="EX: -lossless 1"
-      oninput={updateCookie}
     />
   </div>
   <button class="btn btn-primary" onclick={getNoteData}>ノート取得</button>
