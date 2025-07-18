@@ -84,7 +84,10 @@
     {#if $serverUrl}
       <button
         class="btn btn-xs inline-block"
-        onclick={() => open(miauth.getUrl())}
+        onclick={() => {
+	  serverUrl.set(sanitizedServerUrl);
+	  open(miauth.getUrl());
+        }}
       >
         認証でトークンを生成
       </button>
