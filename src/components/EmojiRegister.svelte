@@ -91,15 +91,22 @@
     roleIdsThatCanBeUsedThisEmojiAsReaction: [],
   };
 
-  let busy = false;
+  let sendEmojiError: string | null;
+
+  $: sendEmojiError = null;
+  $: busy = false;
   const sendEmoji = async (file: File) => {
     busy = true;
-    await addEmoji(sendEmojiData, file);
+    sendEmojiError = null;
+    await addEmoji(sendEmojiData, file).catch(e => {
+      console.error(e);
+      sendEmojiError = JSON.stringify(e, null, 2);
+    });
     busy = false;
   };
 </script>
 
-<div class="grid grid-cols-2 gap-2">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
   <div class="card shadow-md">
     <div class="card-body">
       <div class="card-title text-lg">申請情報</div>
@@ -187,7 +194,7 @@
         <div class="join mt-4 flex-wrap">
           {#each Object.entries(FFmpegArgsTemplates) as [key, value]}
             <button
-              class="btn btn-outline join-item btn-sm"
+              class="btn btn-outline join-item btn-xs md:btn-sm"
               onclick={() => {
                 ffmpegArgs = value;
               }}>{key}</button
@@ -201,7 +208,14 @@
       >
         変換
       </button>
-      <div class="grid grid-cols-2">
+      <div class="grid grid-cols-1 md:grid-cols-2">
+        <label class="form-control w-full">
+          <input
+            type="file"
+            bind:files={inputFile}
+            class="file-input file-input-bordered"
+          />
+        </label>
         <button
           class="btn btn-warning btn-block h-full shadow"
           onclick={imageConvertFromClipboard}
@@ -224,7 +238,7 @@
           />
         </div>
       </div>
-      <div class="grid grid-cols-2 gap-4 rounded-md bg-base-200 shadow">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 rounded-md bg-base-200 shadow">
         <div class="m-4">
           変換前
           <img
@@ -300,7 +314,7 @@
 <div class="card shadow-md">
   <div class="card-body">
     <div class="card-title">登録</div>
-    <div class="grid grid-cols-2 gap-2">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
       <div>
         <div class="form-control">
           <label> <span class="label-text">ショートコード</span></label>
@@ -322,17 +336,32 @@
         </div>
 
         <div class="form-control">
-          <label> <span class="label-text">タグ</span>
+          <label> <span class="label-text">タグ</span> </label>
           <input
             id="tag"
             bind:value={taginput}
             type="text"
             class="input input-xs input-bordered md:input-md md:w-full"
+            placeholder="追加"
             onchange={() => {
               sendEmojiData.aliases = [...sendEmojiData.aliases!, taginput];
               taginput = "";
             }}
-          /></label>
+          />
+        </div>
+        <div class="flex flex-wrap gap-1 md:gap-4 pt-2">
+          {#each sendEmojiData.aliases! as tag, index}
+            <button
+              class="btn btn-outline btn-xs md:btn-sm rounded-full"
+              onclick={() => {
+                sendEmojiData.aliases!.splice(index, 1);
+                sendEmojiData.aliases = sendEmojiData.aliases;
+              }}
+            >
+              {tag}
+              <div class="badge badge-error">×</div>
+            </button>
+          {/each}
         </div>
       </div>
       <div>
@@ -345,13 +374,13 @@
             class="input input-xs input-bordered md:input-md md:w-full"
           />
         </div>
-        <div class="flex gap-8">
+        <div class="flex flex-col md:flex-row md:gap-8">
           <div class="form-control">
             <label class="label cursor-pointer">
               <span class="label-text m-4">センシティブ</span>
               <input
                 type="checkbox"
-                class="toggle"
+                class="toggle checked:text-pink-400"
                 bind:checked={sendEmojiData.isSensitive}
               />
             </label>
@@ -361,7 +390,7 @@
               <span class="label-text m-4">ローカルのみ</span>
               <input
                 type="checkbox"
-                class="toggle"
+                class="toggle checked:text-green-400"
                 bind:checked={sendEmojiData.localOnly}
               />
             </label>
@@ -385,20 +414,9 @@
             }}>変換後を登録</button
           >
         </div>
-      </div>
-      <div class="flex flex-wrap gap-4">
-        {#each sendEmojiData.aliases! as tag, index}
-          <button
-            class="btn btn-outline btn-sm rounded-full"
-            onclick={() => {
-              sendEmojiData.aliases!.splice(index, 1);
-              sendEmojiData.aliases = sendEmojiData.aliases;
-            }}
-          >
-            {tag}
-            <div class="badge badge-error">×</div>
-          </button>
-        {/each}
+        {#if sendEmojiError}
+          <pre class="text-red-500 overflow-auto">{sendEmojiError}</pre>
+        {/if}
       </div>
     </div>
   </div>
