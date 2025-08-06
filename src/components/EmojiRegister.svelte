@@ -3,7 +3,7 @@
   import { get } from "svelte/store";
   import { convert } from "../lib/ffmpeg";
   import type { AdminEmojiAddRequest } from "misskey-js/entities.js";
-  import { addEmoji } from "../lib/misskey";
+  import { fetchImage, addEmoji } from "../lib/misskey";
 
   export let emoji: Emoji;
 
@@ -27,6 +27,11 @@
   };
 
   const imageConvert = async () => {
+    beforeConvertFile = await fetchImage(emoji.file.url);
+    convertImage();
+  };
+
+  const imageConvertFromClipboard = async () => {
     const clipboardData = await navigator.clipboard.read();
     let imageFile: File;
 
@@ -35,30 +40,34 @@
       if (item.types.includes(emoji.file.type)) {
         const blob = await item.getType(emoji.file.type);
 
-        const reader = new FileReader();
-        reader.addEventListener("load", () => {
-          beforeConvertImg.src = reader.result as string;
-        });
         beforeConvertFile = new File([blob], emoji.file.name, {
           type: emoji.file.type,
         });
-        reader.readAsDataURL(blob);
-        afterConvertFile = await convert(beforeConvertFile, ffmpegArgs);
-        if (afterConvertFile != null) {
-          afterConvertImg.src = URL.createObjectURL(afterConvertFile);
-        }
+        convertImage();
+        return;
       }
     }
   };
 
   const imageConvertwithUpload = async () => {
     beforeConvertFile = inputFile[0];
-    beforeConvertImg.src = URL.createObjectURL(beforeConvertFile);
-    afterConvertFile = await convert(beforeConvertFile, ffmpegArgs);
-    if (afterConvertFile != null) {
-      afterConvertImg.src = URL.createObjectURL(afterConvertFile);
-    }
+    convertImage();
   };
+
+  function convertImage() {
+    if (beforeConvertFile) {
+      beforeConvertImg.src = URL.createObjectURL(beforeConvertFile);
+      convert(beforeConvertFile, ffmpegArgs)
+        .then(v => {
+          afterConvertFile = v;
+          if (v) afterConvertImg.src = URL.createObjectURL(afterConvertFile);
+        });
+    }
+  }
+    
+  $: {
+    if (inputFile?.[0]) imageConvertwithUpload();
+  }
 
   let beforewidth = 0;
   let beforeheight = 0;
@@ -203,19 +212,27 @@
         変換
       </button>
       <div class="grid grid-cols-1 md:grid-cols-2">
-        <label class="form-control w-full">
-          <input
-            type="file"
-            bind:files={inputFile}
-            class="file-input file-input-bordered"
-          />
-        </label>
         <button
           class="btn btn-warning btn-block h-full shadow"
-          onclick={imageConvertwithUpload}
+          onclick={imageConvertFromClipboard}
         >
-          アップロード変換
+          クリップボードから変換
         </button>
+        <div>
+          <label
+            class="btn btn-warning btn-block h-full shadow"
+            for="input-upload-file"
+          >
+            アップロード変換
+          </label>
+          <input
+            type="file"
+            name="input-upload-file"
+            id="input-upload-file"
+            bind:files={inputFile}
+            hidden
+          />
+        </div>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 rounded-md bg-base-200 shadow">
         <div class="m-4">
