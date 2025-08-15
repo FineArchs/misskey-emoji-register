@@ -1,6 +1,6 @@
 import { api } from "misskey-js"
 
-import { serverUrl, accessToken } from "./store";
+import { serverUrl, accessToken, corsAnywhereUrl } from "./store";
 import { get } from "svelte/store";
 import type { APIClient } from "misskey-js/api.js";
 import type { AdminEmojiAddRequest, DriveFilesCreateResponse, Note } from "misskey-js/entities.js";
@@ -39,7 +39,7 @@ export const addEmoji = async (request: Omit<AdminEmojiAddRequest, 'file'>, file
 }
 
 export async function fetchImage(url: string): Promise<File> {
-  const response = await fetch(url);
+  const response = await fetch(corsAnywhereUrl + url);
   if (!response.ok) {
     throw new Error(`画像の取得に失敗しました: ${response.status}`);
   }

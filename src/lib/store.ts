@@ -20,6 +20,7 @@ export const serverUrl = writable("");
 export const accessToken = writable("");
 export const note = writable<Note>();
 export const defaultFFMpegArgs = writable("-lossless 1");
+export const corsAnywhereUrl = writable("");
 export const emojis = writable<Emoji[]>();
 
 export const getCookie = () => {
@@ -33,6 +34,9 @@ export const getCookie = () => {
       if (elem.startsWith("serverUrl")) {
         serverUrl.set(elem.replace(/serverUrl=/, ""));
       }
+      if (elem.startsWith("corsAnywhereUrl")) {
+        serverUrl.set(elem.replace(/corsAnywhereUrl=/, ""));
+      }
     })
   }
   apiInit();
@@ -41,5 +45,6 @@ export const getCookie = () => {
 export const updateCookie = () => {
   document.cookie = `accessToken=${get(accessToken)}; Max-Age=50000000`;
   document.cookie = `serverUrl=${get(serverUrl)}; Max-Age=50000000`;
+  document.cookie = `corsAnywhereUrl=${get(serverUrl)}; Max-Age=50000000`;
   apiInit();
 }

@@ -6,6 +6,7 @@
     updateCookie,
     emojis,
     defaultFFMpegArgs,
+    corsAnywhereUrl,
   } from "../lib/store";
   import { getNote, init } from "../lib/misskey";
   import { splitEmojis } from "../lib/splitEmojis";
@@ -127,6 +128,17 @@
       type="text"
       class="input input-xs input-bordered md:input-md md:w-64"
       placeholder="EX: -lossless 1"
+      oninput={updateCookie}
+    />
+  </div>
+  <div>
+    <label for="default-ffmpeg-args">cors-anywhere URL</label>
+    <input
+      id="cors-anywhere-url"
+      bind:value={$corsAnywhereUrl}
+      type="text"
+      class="input input-xs input-bordered md:input-md md:w-64"
+      placeholder="EX: https://example-cors-anywhere.com"
       oninput={updateCookie}
     />
   </div>
