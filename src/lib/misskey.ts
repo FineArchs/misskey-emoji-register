@@ -39,7 +39,7 @@ export const addEmoji = async (request: Omit<AdminEmojiAddRequest, 'file'>, file
 }
 
 export async function fetchImage(url: string): Promise<File> {
-  const response = await fetch(corsAnywhereUrl + url);
+  const response = await fetch(get(corsAnywhereUrl) + url);
   if (!response.ok) {
     throw new Error(`画像の取得に失敗しました: ${response.status}`);
   }
