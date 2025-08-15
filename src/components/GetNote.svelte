@@ -5,6 +5,7 @@
     note,
     emojis,
     defaultFFMpegArgs,
+    corsAnywhereUrl,
   } from "../lib/store";
   import { getNote, init } from "../lib/misskey";
   import { splitEmojis } from "../lib/splitEmojis";
@@ -124,6 +125,16 @@
       type="text"
       class="input input-xs input-bordered md:input-md md:w-64"
       placeholder="EX: -lossless 1"
+    />
+  </div>
+  <div>
+    <label for="default-ffmpeg-args">cors-anywhere URL</label>
+    <input
+      id="cors-anywhere-url"
+      bind:value={$corsAnywhereUrl}
+      type="text"
+      class="input input-xs input-bordered md:input-md md:w-64"
+      placeholder="EX: https://example-cors-anywhere.com"
     />
   </div>
   <button class="btn btn-primary" onclick={getNoteData}>ノート取得</button>

@@ -20,10 +20,11 @@ export const serverUrl = writable("");
 export const accessToken = writable("");
 export const note = writable<Note>();
 export const defaultFFMpegArgs = writable("-lossless 1");
+export const corsAnywhereUrl = writable("");
 export const emojis = writable<Emoji[]>();
 
 const cookieStoresRecord: Record<string, Writable<string>> = {
-  serverUrl, accessToken, defaultFFMpegArgs
+  serverUrl, accessToken, defaultFFMpegArgs, corsAnywhereUrl
 };
 
 export const getCookie = () => {
