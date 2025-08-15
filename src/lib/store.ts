@@ -35,7 +35,7 @@ export const getCookie = () => {
         serverUrl.set(elem.replace(/serverUrl=/, ""));
       }
       if (elem.startsWith("corsAnywhereUrl")) {
-        serverUrl.set(elem.replace(/corsAnywhereUrl=/, ""));
+        corsAnywhereUrl.set(elem.replace(/corsAnywhereUrl=/, ""));
       }
     })
   }
@@ -45,6 +45,6 @@ export const getCookie = () => {
 export const updateCookie = () => {
   document.cookie = `accessToken=${get(accessToken)}; Max-Age=50000000`;
   document.cookie = `serverUrl=${get(serverUrl)}; Max-Age=50000000`;
-  document.cookie = `corsAnywhereUrl=${get(serverUrl)}; Max-Age=50000000`;
+  document.cookie = `corsAnywhereUrl=${get(corsAnywhereUrl)}; Max-Age=50000000`;
   apiInit();
 }
