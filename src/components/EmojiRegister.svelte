@@ -26,12 +26,12 @@
     縦幅128px劣化圧縮GIFアニメ: "-vf scale=-1:128 -loop 0",
   };
 
-  const imageConvert = async () => {
+  const getImageByFetch = async () => {
     beforeConvertFile = await fetchImage(emoji.file.url);
     convertImage();
   };
 
-  const imageConvertFromClipboard = async () => {
+  const getImageFromClipboard = async () => {
     const clipboardData = await navigator.clipboard.read();
     let imageFile: File;
 
@@ -49,7 +49,7 @@
     }
   };
 
-  const imageConvertwithUpload = async () => {
+  const getImageWithUpload = async () => {
     beforeConvertFile = inputFile[0];
     convertImage();
   };
@@ -66,7 +66,7 @@
   }
     
   $: {
-    if (inputFile?.[0]) imageConvertwithUpload();
+    if (inputFile?.[0]) getImageWithUpload();
   }
 
   let beforewidth = 0;
@@ -207,14 +207,14 @@
       </div>
       <button
         class="btn btn-info btn-lg btn-block shadow"
-        onclick={imageConvert}
+        onclick={getImageByFetch}
       >
         変換
       </button>
       <div class="grid grid-cols-1 md:grid-cols-2">
         <button
           class="btn btn-warning btn-block h-full shadow"
-          onclick={imageConvertFromClipboard}
+          onclick={getImageFromClipboard}
         >
           クリップボードから変換
         </button>
