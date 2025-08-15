@@ -27,8 +27,8 @@
   };
 
   const imageConvert = async () => {
-    console.log('imageConvert');
     beforeConvertFile = await fetchImage(emoji.file.url);
+    convertImage();
   };
 
   const imageConvertFromClipboard = async () => {
@@ -43,6 +43,7 @@
         beforeConvertFile = new File([blob], emoji.file.name, {
           type: emoji.file.type,
         });
+        convertImage();
         return;
       }
     }
@@ -50,11 +51,11 @@
 
   const imageConvertwithUpload = async () => {
     beforeConvertFile = inputFile[0];
+    convertImage();
   };
 
-  $: {
+  function convertImage() {
     if (beforeConvertFile) {
-      console.log('if beforeConvertFile');
       beforeConvertImg.src = URL.createObjectURL(beforeConvertFile);
       convert(beforeConvertFile, ffmpegArgs)
         .then(v => {
