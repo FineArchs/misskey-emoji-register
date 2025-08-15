@@ -27,6 +27,7 @@
   };
 
   const imageConvert = async () => {
+    console.log('imageConvert');
     beforeConvertFile = await fetchImage(emoji.file.url);
   };
 
@@ -53,6 +54,7 @@
 
   $: {
     if (beforeConvertFile) {
+      console.log('if beforeConvertFile');
       beforeConvertImg.src = URL.createObjectURL(beforeConvertFile);
       convert(beforeConvertFile, ffmpegArgs)
         .then(v => {
@@ -209,13 +211,6 @@
         変換
       </button>
       <div class="grid grid-cols-1 md:grid-cols-2">
-        <label class="form-control w-full">
-          <input
-            type="file"
-            bind:files={inputFile}
-            class="file-input file-input-bordered"
-          />
-        </label>
         <button
           class="btn btn-warning btn-block h-full shadow"
           onclick={imageConvertFromClipboard}
