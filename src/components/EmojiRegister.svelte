@@ -27,7 +27,7 @@
   };
 
   const getImageByFetch = async () => {
-    beforeConvertFile = await fetchImage(emoji.file.url);
+    beforeConvertFile = await fetchImage(emoji.file.url, emoji.file.name);
     convertImage();
   };
 
