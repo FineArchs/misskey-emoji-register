@@ -38,7 +38,7 @@ export const addEmoji = async (request: Omit<AdminEmojiAddRequest, 'file'>, file
   });
 }
 
-export async function fetchImage(url: string): Promise<File> {
+export async function fetchImage(url: string, filename: string): Promise<File> {
   const response = await fetch(get(corsAnywhereUrl) + url);
   if (!response.ok) {
     throw new Error(`画像の取得に失敗しました: ${response.status}`);
@@ -46,16 +46,5 @@ export async function fetchImage(url: string): Promise<File> {
 
   const blob = await response.blob();
 
-  // URLからファイル名を抽出
-  const urlObj = new URL(url);
-  let fileName = urlObj.pathname.split('/').pop() || 'downloaded_image';
-
-  // ファイル名に拡張子が含まれていない場合、MIMEタイプから拡張子を推測
-  if (!fileName.includes('.')) {
-    const mimeType = blob.type;
-    const extension = mimeType.split('/').pop();
-    fileName += `.${extension}`;
-  }
-
-  return new File([blob], fileName, { type: blob.type });
+  return new File([blob], filename, { type: blob.type });
 }
