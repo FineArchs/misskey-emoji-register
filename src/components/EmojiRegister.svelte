@@ -26,28 +26,32 @@
     縦幅128px劣化圧縮GIFアニメ: "-vf scale=-1:128 -loop 0",
   };
 
-  const imageConvert = async () => {
+  async function getClipboardItemOfImage(): Promise<{ item: ClipboardItem, type: string } | null> {
     const clipboardData = await navigator.clipboard.read();
-    let imageFile: File;
 
     for (let i = 0; i < clipboardData.length; i++) {
       const item = clipboardData[i];
-      if (item.types.includes(emoji.file.type)) {
-        const blob = await item.getType(emoji.file.type);
+      const type = item.types.find(t => t.startsWith('image/'));
+      if (type) return { item , type };
+    }
 
-        const reader = new FileReader();
-        reader.addEventListener("load", () => {
-          beforeConvertImg.src = reader.result as string;
-        });
-        beforeConvertFile = new File([blob], emoji.file.name, {
-          type: emoji.file.type,
-        });
-        reader.readAsDataURL(blob);
-        afterConvertFile = await convert(beforeConvertFile, ffmpegArgs);
-        if (afterConvertFile != null) {
-          afterConvertImg.src = URL.createObjectURL(afterConvertFile);
-        }
-      }
+    return null;
+  }
+  const imageConvert = async () => {
+    const data = await getClipboardItemOfImage();
+    if (data === null) throw new Error("no clipboard item availble as image.");
+    const { item, type } = data;
+    const blob = await item.getType(type);
+    const reader = new FileReader();
+
+    reader.addEventListener("load", () => {
+      beforeConvertImg.src = reader.result as string;
+    });
+    beforeConvertFile = new File([blob], emoji.file.name, { type });
+    reader.readAsDataURL(blob);
+    afterConvertFile = await convert(beforeConvertFile, ffmpegArgs);
+    if (afterConvertFile != null) {
+      afterConvertImg.src = URL.createObjectURL(afterConvertFile);
     }
   };
 
