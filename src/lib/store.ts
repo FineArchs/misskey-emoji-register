@@ -23,10 +23,10 @@ export const defaultFFMpegArgs = writable("-lossless 1");
 export const corsAnywhereUrl = writable("");
 export const emojis = writable<Emoji[]>();
 
+// 機密情報　一週間で消える
 const cookieStoresRecord: Record<string, Writable<string>> = {
-  serverUrl, accessToken, defaultFFMpegArgs, corsAnywhereUrl
+  accessToken,
 };
-
 export const getCookie = () => {
   const cookies = document.cookie;
   if (cookies !== "") {
@@ -46,4 +46,14 @@ export const getCookie = () => {
     });
   }
   apiInit();
+}
+
+// 機密でもない情報　設定系
+const storageStoresRecord: Record<string, Writable<string>> = {
+  serverUrl, defaultFFMpegArgs, corsAnywhereUrl
+};
+for (const [key, store] of Object.entries(storageStoresRecord)) {
+  const saved = localStorage.getItem(key);
+  if (saved != null) store.set(saved);
+  store.subscribe(value => localStorage.setItem(key, value));
 }
