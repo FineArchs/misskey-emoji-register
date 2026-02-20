@@ -89,7 +89,7 @@
     category: emoji.category,
     aliases: emoji.tag,
     license: `@${get(note).user.username} ${emoji.license}`,
-    isSensitive: emoji.isSensitive !== "",
+    isSensitive: emoji.file.isSensitive,
     localOnly: emoji.localOnly !== "",
     roleIdsThatCanBeUsedThisEmojiAsReaction: [],
   };
@@ -175,6 +175,13 @@
               ></td
             >
           </tr>
+          <tr>
+            <th>センシティブ</th>
+            <td
+              class:text-pink-400={emoji.file.isSensitive}
+            >{emoji.file.isSensitive ? "はい" : "いいえ"}</td>
+          </tr>
+          <tr>
         </tbody>
       </table>
     </div>
