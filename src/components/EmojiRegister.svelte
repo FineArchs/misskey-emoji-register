@@ -89,7 +89,8 @@
     category: emoji.category,
     aliases: emoji.tag,
     license: `@${get(note).user.username} ${emoji.license}`,
-    isSensitive: emoji.isSensitive !== "",
+    // isSensitive: emoji.isSensitive !== "",
+    isSensitive: emoji.file.isSensitive,
     localOnly: emoji.localOnly !== "",
     roleIdsThatCanBeUsedThisEmojiAsReaction: [],
   };
@@ -165,7 +166,7 @@
           </tr>
           <tr>
             <th>ファイルサイズ</th>
-            <td>{emoji.file.size / 1000.0} KB</td>
+            <td>{emoji.file.size / 1000.0} kb</td>
           </tr>
           <tr>
             <th>ファイルURL</th>
@@ -175,6 +176,13 @@
               ></td
             >
           </tr>
+          <tr>
+            <th>センシティブ</th>
+            <td
+              class:text-pink-400={emoji.file.isSensitive}
+            >{emoji.file.isSensitive ? "はい" : "いいえ"}</td>
+          </tr>
+          <tr>
         </tbody>
       </table>
     </div>
