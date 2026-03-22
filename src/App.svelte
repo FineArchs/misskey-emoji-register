@@ -50,7 +50,7 @@
           onclick={() => tabSelect(index)}
 	>
 	  <div class="min-w-4 flex flex-row">
-            <img class="w-4 object-contain" src={emoji.file.url} />
+            <img class="w-4 object-contain" src={emoji.file.url} alt=""/>
             <span class="px-2 whitespace-nowrap">:{emoji.name}:</span>
           </div>
 	</button>

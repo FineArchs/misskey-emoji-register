@@ -114,14 +114,14 @@
     <div class="card-body">
       <div class="card-title text-lg">申請情報</div>
       <div class="flex flex-wrap gap-2">
-        <img class="w-4 bg-black object-contain" src={emoji.file.url} />
-        <img class="w-4 bg-white object-contain" src={emoji.file.url} />
-        <img class="w-8 bg-black object-contain" src={emoji.file.url} />
-        <img class="w-8 bg-white object-contain" src={emoji.file.url} />
-        <img class="w-16 bg-black object-contain" src={emoji.file.url} />
-        <img class="w-16 bg-white object-contain" src={emoji.file.url} />
-        <img class="w-32 bg-black object-contain" src={emoji.file.url} />
-        <img class="w-32 bg-white object-contain" src={emoji.file.url} />
+        <img class="w-4 bg-black object-contain" src={emoji.file.url} alt="original emoji: bg-black w-4" />
+        <img class="w-4 bg-white object-contain" src={emoji.file.url} alt="original emoji: bg-white w-4" />
+        <img class="w-8 bg-black object-contain" src={emoji.file.url} alt="original emoji: bg-black w-8" />
+        <img class="w-8 bg-white object-contain" src={emoji.file.url} alt="original emoji: bg-white w-8" />
+        <img class="w-16 bg-black object-contain" src={emoji.file.url} alt="original emoji: bg-black w-16" />
+        <img class="w-16 bg-white object-contain" src={emoji.file.url} alt="original emoji: bg-white w-16" />
+        <img class="w-32 bg-black object-contain" src={emoji.file.url} alt="original emoji: bg-black w-32" />
+        <img class="w-32 bg-white object-contain" src={emoji.file.url} alt="original emoji: bg-white w-32" />
       </div>
       <table class="table table-zebra table-fixed">
         <tbody>
@@ -194,7 +194,7 @@
         GIFアニメは一度画像をダウンロードしてからアップロード変換を選択して下さい
       </div>
       <div>
-        <label>ffmpeg引数</label>
+        <label for="ffmpeg-args">ffmpeg引数</label>
         <input
           id="ffmpeg-args"
           bind:value={ffmpegArgs}
@@ -257,6 +257,7 @@
             bind:this={beforeConvertImg}
             class="w-32 bg-black object-contain"
             onload={beforeConvertLoaded}
+            alt="before conversion"
           />
           {#if beforeConvertFile != null}
             <table class="table">
@@ -291,6 +292,7 @@
             bind:this={afterConvertImg}
             class="w-32 bg-black object-contain"
             onload={afterConvertLoaded}
+            alt="after conversion"
           />
           {#if afterConvertFile != null}
             <table class="table">
@@ -329,7 +331,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
       <div>
         <div class="form-control">
-          <label> <span class="label-text">ショートコード</span></label>
+          <label for="name"> <span class="label-text">ショートコード</span></label>
           <input
             id="name"
             bind:value={sendEmojiData.name}
@@ -338,7 +340,7 @@
           />
         </div>
         <div class="form-control">
-          <label> <span class="label-text">ライセンス</span></label>
+          <label for="license"> <span class="label-text">ライセンス</span></label>
           <input
             id="license"
             bind:value={sendEmojiData.license}
@@ -348,7 +350,7 @@
         </div>
 
         <div class="form-control">
-          <label> <span class="label-text">タグ</span> </label>
+          <label for="tag"> <span class="label-text">タグ</span> </label>
           <input
             id="tag"
             bind:value={taginput}
@@ -378,7 +380,7 @@
       </div>
       <div>
         <div class="form-control">
-          <label> <span class="label-text">カテゴリー</span></label>
+          <label for="category"> <span class="label-text">カテゴリー</span></label>
           <input
             id="category"
             bind:value={sendEmojiData.category}
