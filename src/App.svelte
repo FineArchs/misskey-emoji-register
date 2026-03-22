@@ -4,12 +4,12 @@
   import GetNote from "./components/GetNote.svelte";
   import EditNote from "./components/EditNote.svelte";
 
-  import { emojis, getCookie, note } from "./lib/store";
+  import { initStore, emojis, note } from "./lib/store";
   import { load } from "./lib/ffmpeg";
 
   let selectedTab: null | 'getnote' | 'editnote' | number = 'getnote';
 
-  getCookie();
+  initStore();
 
   onMount(async () => {
     await load();

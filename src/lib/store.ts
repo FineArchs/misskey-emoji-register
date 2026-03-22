@@ -26,7 +26,7 @@ export const emojis = writable<Emoji[]>();
 const cookieStoresRecord: Record<string, Writable<string>> = {
   accessToken,
 };
-export const getCookie = () => {
+const getCookie = () => {
   const cookies = document.cookie;
   if (cookies !== "") {
     const strArr = cookies.split("; ");
@@ -53,4 +53,41 @@ for (const [key, store] of Object.entries(storageStoresRecord)) {
   const saved = localStorage.getItem(key);
   if (saved != null) store.set(saved);
   store.subscribe(value => localStorage.setItem(key, value));
+}
+function loadQueryParam(): void {
+  const url = new URL(window.location.href);
+  const params = new URLSearchParams(url.search);
+  let doKeep = false;
+  for (const [qpkey, qpvalue] of params) {
+    if (Object.hasOwn(storageStoresRecord, qpkey)) {
+      storageStoresRecord[qpkey].set(qpvalue);
+      continue;
+    }
+    switch (qpkey) {
+      case 'load': {
+        const newParams = new URLSearchParams();
+        for (const [k, st] of Object.entries(storageStoresRecord)) {
+          newParams.append(k, get(st));
+        }
+        url.search = newParams.toString();
+        window.history.replaceState(null, '', url.toString());
+        doKeep = true;
+        break;
+      }
+      case 'keep': {
+        doKeep = !!qpvalue;
+        break;
+      }
+      default: {
+        console.error(`Unknown Query Param: ${qpkey}`);
+        break;
+      }
+    }
+  }
+  if (!doKeep) window.history.replaceState(null, '', url.pathname);
+}
+
+export function initStore(): void {
+  getCookie();
+  loadQueryParam();
 }
