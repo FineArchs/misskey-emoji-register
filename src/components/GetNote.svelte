@@ -49,7 +49,7 @@
 
 <div class="grid gap-4">
   <div>
-    <label for="server-url">サーバーURL</label>
+    <label for="server-url">サーバーURL<span class="text-red-400">*</span></label>
     <input
       id="server-url"
       bind:value={$serverUrl}
@@ -70,7 +70,7 @@
     {/if}
   </div>
   <div>
-    <label for="access-token">アクセストークン</label>
+    <label for="access-token">アクセストークン<span class="text-red-400">*</span></label>
     <input
       id="access-token"
       bind:value={$accessToken}
@@ -98,7 +98,7 @@
     {/if}
   </div>
   <div>
-    <label for="note-id">ノートID</label>
+    <label for="note-id">ノートID<span class="text-red-400">*</span></label>
     <input
       id="note-id"
       bind:value={noteId}
@@ -137,7 +137,11 @@
       placeholder="EX: https://example-cors-anywhere.com"
     />
   </div>
-  <button class="btn btn-primary" onclick={getNoteData}>ノート取得</button>
+  <button
+    class="btn btn-primary"
+    onclick={getNoteData}
+    disabled={!($serverUrl && $accessToken && noteId)}
+  >ノート取得</button>
   <textarea
     class="textarea textarea-bordered"
     readonly
