@@ -7,7 +7,7 @@
     defaultFFMpegArgs,
     corsAnywhereUrl,
   } from "../lib/store";
-  import { getNote, init } from "../lib/misskey";
+  import { getNote } from "../lib/misskey";
   import { splitEmojis } from "../lib/splitEmojis";
   import { MiAuth } from "../lib/miauth.svelte";
 

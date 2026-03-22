@@ -1,6 +1,5 @@
 import { writable, get } from "svelte/store";
 import type { Writable } from "svelte/store";
-import { init as apiInit } from "./misskey";
 import type { DriveFile, Note } from "misskey-js/entities.js";
 
 export type Emoji = {
@@ -42,10 +41,8 @@ export const getCookie = () => {
   for (const [key, store] of Object.entries(cookieStoresRecord)) {
     store.subscribe(value => {
       document.cookie = `${key}=${value}; Max-Age=50000000`;
-      apiInit();
     });
   }
-  apiInit();
 }
 
 // 機密でもない情報　設定系

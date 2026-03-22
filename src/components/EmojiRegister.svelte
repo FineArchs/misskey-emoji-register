@@ -212,7 +212,7 @@
           {/each}
         </div>
       </div>
-      {#if get(corsAnywhereUrl)}
+      {#if $corsAnywhereUrl}
         <button
           class="btn btn-info btn-lg btn-block shadow"
           onclick={getImageByFetch}
