@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { defaultFFMpegArgs, note, serverUrl, type Emoji } from "../lib/store";
+  import { defaultFFMpegArgs, note, serverUrl, corsAnywhereUrl, type Emoji } from "../lib/store";
   import { get } from "svelte/store";
   import { convert } from "../lib/ffmpeg";
   import type { AdminEmojiAddRequest } from "misskey-js/entities.js";
@@ -212,12 +212,21 @@
           {/each}
         </div>
       </div>
-      <button
-        class="btn btn-info btn-lg btn-block shadow"
-        onclick={getImageByFetch}
-      >
-        変換
-      </button>
+      {#if get(corsAnywhereUrl)}
+        <button
+          class="btn btn-info btn-lg btn-block shadow"
+          onclick={getImageByFetch}
+        >
+          ワンクリック変換
+        </button>
+      {:else}
+        <button
+          class="btn btn-lg btn-block shadow text-sm"
+          disabled
+        >
+          ワンクリック変換にはcors-anywhere-urlが必要です
+        </button>
+      {/if}
       <div class="grid grid-cols-1 md:grid-cols-2">
         <button
           class="btn btn-warning btn-block h-full shadow"
