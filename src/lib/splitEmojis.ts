@@ -5,7 +5,7 @@ const NAMECHAR = "①"
 const SPLITCHAR = "▼"
 const TAGSPLITCHAR = /(?: |　|\n)+/
 const REPEATCHAR_REGEXP = /^(★|☆)$/
-const EMOJINAME_REGEXP1 = /:([a-z0-9_+-]+):/i
+export const EMOJINAME_REGEXP1 = /:([a-z0-9_+-]+):/i
 const EMOJINAME_REGEXP2 = /[a-z0-9_+-]+/i
 
 // 読み取りはこの順番に行われる。入れ替わりがあると正しく読み取られない

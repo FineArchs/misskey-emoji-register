@@ -1,13 +1,15 @@
 <script lang="ts">
-  import { onMount, tick } from "svelte";
+  import { onMount, tick, type SvelteComponent } from "svelte";
   import EmojiRegister from "./components/EmojiRegister.svelte";
   import GetNote from "./components/GetNote.svelte";
   import EditNote from "./components/EditNote.svelte";
+  import ToolsDialog from "./components/ToolsDialog.svelte";
 
   import { initStore, emojis, note } from "./lib/store";
   import { load } from "./lib/ffmpeg";
 
   let selectedTab: null | 'getnote' | 'editnote' | number = 'getnote';
+  let toolsDialog: ReturnType<typeof ToolsDialog>;
 
   initStore();
 
@@ -28,6 +30,13 @@
       <div class="navbar-start w-full break-keep">
         <h1 class="text-xl">Misskey emoji Register</h1>
       </div>
+      <button
+        class="navbar-end text-xl btn btn-ghost w-fit"
+        onclick={() => toolsDialog.show()}
+      >
+        🛠️<span class="hidden sm:inline">ツール</span>
+      </button>
+        <ToolsDialog bind:this={toolsDialog} />
     </div>
 
     <div role="tablist" class="tabs tabs-bordered bg-base-300 shadow overflow-auto">

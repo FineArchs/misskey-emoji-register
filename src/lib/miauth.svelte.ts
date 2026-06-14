@@ -18,7 +18,7 @@ export class MiAuth {
       this.sessionId = null;
       unsubscribe();
     });
-    return `${get(serverUrl)}/miauth/${this.sessionId}?name=misskey-emoji-register&permission=write:drive,write:admin:emoji`;
+    return `${get(serverUrl)}/miauth/${this.sessionId}?name=misskey-emoji-register&permission=write:drive,read:admin:emoji,write:admin:emoji`;
   }
   async requestToken(): Promise<void> {
     if (this.sessionId == null) throw new Error("token is not ready");
