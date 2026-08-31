@@ -20,6 +20,7 @@ export const accessToken = writable("");
 export const note = writable<Note>();
 export const defaultFFMpegArgs = writable("-lossless 1");
 export const corsAnywhereUrl = writable("");
+export const emojiRoboUrl = writable("");
 export const emojis = writable<Emoji[]>();
 
 // 機密情報　一週間で消える
@@ -47,7 +48,7 @@ const getCookie = () => {
 
 // 機密でもない情報　設定系
 const storageStoresRecord: Record<string, Writable<string>> = {
-  serverUrl, defaultFFMpegArgs, corsAnywhereUrl
+  serverUrl, defaultFFMpegArgs, corsAnywhereUrl, emojiRoboUrl
 };
 for (const [key, store] of Object.entries(storageStoresRecord)) {
   const saved = localStorage.getItem(key);
